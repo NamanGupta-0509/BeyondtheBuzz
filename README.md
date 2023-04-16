@@ -78,9 +78,9 @@ Building a powerful neural network model that can accurately detect fraud transa
 ```python
 model = Sequential([               
         tf.keras.Input(shape=(9,)),    
-        Dense(64,activation ='relu'),
+        Dense(512,activation ='relu'),
         Dense(256,activation ='relu'),
-        Dense(64,activation ='relu'),
+        Dense(16,activation ='relu'),
         Dense(1,activation ='sigmoid')
     ])
 ```
@@ -101,15 +101,15 @@ model.compile(
 
 model.fit(
     data,y_array,
-    batch_size=200,
-    epochs=140
+    batch_size=120,
+    epochs=180
 )
 ```
 
 We implement training using the traditional 80-20 split method for model training as it is giving better results.
 
 ``` python
-model.fit(X_array, Y_array, epochs=120, batch_size=200, validation_split=0.2)
+model.fit(X_array, Y_array, epochs=180, batch_size=120, validation_split=0.2)
 ```
 
 
