@@ -6,10 +6,7 @@ A brief description of what this project does and who it's for
 
 ## Contributions
 
-**Trijal Srivastava, Naman Gupta**
-
-Hi and welcome to our submission!
-We will try our best to explain the logic, implementation and code. The code represents our final solution, but we will try to give you some insight into how we reached this.
+**Naman Gupta(220686)**
 
 ## Data Preprocessing
 
