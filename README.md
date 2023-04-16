@@ -127,20 +127,20 @@ r_squared = r2_score(Y_array, prediction)
 
 ```
 Higher the value of R-squared and AUC-ROC, better is the model.
-Generally, R-squared value over 0.3 and AUC-ROC over 0.7 is considered good (obviously differs with different objectives and models). Thus, our model seems to perform well wrt this.
+Generally, R-squared value over 0.2 and AUC-ROC over 0.7 is considered good (obviously differs with different objectives and models). Thus, our model seems to perform well wrt this.
 
-The value of R-squared is ____.
-The value of AUC-ROC is _____.
+The value of R-squared is 0.248
+The value of AUC-ROC is 0.721
 
 The result while training the model are - 
 
-Accuracy: 
-Loss: 
+Accuracy: 0.9586
+Loss: 0.1324
 
 And on investigating in detail we found out - 
 
-- It correctly identified fraud transactions ____ out of _____ times.
-- It correctly identified legit transactions ____ out of _____ times.
+- It correctly identified fraud transactions 777 out of 1722 times.
+- It correctly identified legit transactions 27480 out of 27753 times.
 
 And the results on test.csv are posted in the repo with name predictions.csv
 
