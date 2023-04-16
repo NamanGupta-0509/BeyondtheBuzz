@@ -6,7 +6,7 @@ A brief description of what this project does and who it's for
 
 ## Contributions
 
-**Trijal Srivastava(221144), Naman Gupta(220686)**
+**Trijal Srivastava, Naman Gupta**
 
 Hi and welcome to our submission!
 We will try our best to explain the logic, implementation and code. The code represents our final solution, but we will try to give you some insight into how we reached this.
@@ -106,3 +106,21 @@ model.fit(
 )
 ```
 
+NOTE: We tried using the traditional 80-20 split method for model traing but it kept failing due to the highly unbalanced datapoints grouped by verdict ie. legit and fraud transactions. So we dropped that thought.
+
+
+
+## Results
+
+The result while training the model are - 
+
+Accuracy: 
+Loss: 
+
+And on investigating in detail we found out - 
+
+- It correctly identified fraud transactions ____ out of _____ times.
+- It correctly identified legit transactions ____ out of _____ times.
+
+And the results on test.csv are posted in the repo
+## Thanks:)
