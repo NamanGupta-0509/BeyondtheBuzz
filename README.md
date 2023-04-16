@@ -1,17 +1,29 @@
 
 # Beyond the Buzz
 
-A brief description of what this project does and who it's for
+My submission for the recruitment task for SnT Project - Beyond the Buzz.
+
+ 
+    Naman Gupta
+    - Roll no - 220686
+    - Email - namangupta22@iitk.ac.in / namangupta0509@gmail.com
+    - Phone no - 7678600231
 
 
-## Contributions
+Greetings and thank you for reviewing my submission! Although the code represents my final solution,I aim to offer insights into my thought process and methodology.
 
-**Naman Gupta(220686)**
+GitHub Repo link: https://github.com/NamanGupta-0509/BeyondtheBuzz
 
 ## Data Preprocessing
 
-Given the file 'train.csv', we plotted the data separately for each of the 9 parameters and found outliers that may reduce the accuracy of our model.
+Before we start training and building our ml model, we need to assure that the data given is fit for usage.
 
+So, first we do data cleaning ie. remove all incosistencies, remove all NaN values(if any).
+
+Next, we plot the data to see the distribution.
+We see that there are many outliers, as far as 6-7 standard deviations away from mean, that may reduce the accuracy of our model. So, we filter and remove those data entries.
+
+The raw and processed data are shown below - 
 
 Raw Data | Processed Data
 --- | ---
@@ -19,22 +31,12 @@ Raw Data | Processed Data
 ![Alt text](https://i.ibb.co/fvqWqQ1/newplot-1.jpg) | ![Alt text](https://i.ibb.co/Rv20CkT/newplot-4.jpg)
 
 To filter the data we used z-score as a parameter.
-Whenever the z-score of a datapoint was either greater than 3 or less than -3, we scraped the data. Here, train is pandas dataframe and stats.zscore is imported from scipy library.
+Whenever the z-score of a datapoint was either greater than 3 or less than -3 (3 is the usual standard taken), we scraped the data. Here, train is pandas dataframe and stats.zscore is imported from scipy library.
 
 ``` python
 for i in params:
   train = train[abs(stats.zscore(train[i]))<=3]
 ```
-
-Before normalization, the train dataframe (top 5 rows) looked like - 
-
-|index|VERDICT|PARAMETER\_1|PARAMETER\_2|PARAMETER\_3|PARAMETER\_4|PARAMETER\_5|PARAMETER\_6|PARAMETER\_7|PARAMETER\_8|PARAMETER\_9|
-|---|---|---|---|---|---|---|---|---|---|---|
-|0|1|39353|85475|117961|118300|123472|117905|117906|290919|117908|
-|1|1|17183|1540|117961|118343|123125|118536|118536|308574|118539|
-|2|1|36724|14457|118219|118220|117884|117879|267952|19721|117880|
-|3|1|36135|5396|117961|118343|119993|118321|240983|290919|118322|
-|4|1|42680|5905|117929|117930|119569|119323|123932|19793|119325|
 
 
 Finally, we normalisized the data so that it has a mean of 0 and a standard deviation of 1. Here, trainprocessed is the filtered dataset.
@@ -54,7 +56,7 @@ train_processed[params] = scaler.fit_transform(train_processed[params])
 |3|1|-0\.18803280136994135|-0\.6578032130454982|0\.09751489082811729|-0\.0706434921686976|0\.008414834280229261|-0\.24737980301994386|1\.082449353038754|1\.0456337456753682|-0\.42757895077042907|
 |4|1|0\.052627890750070724|-0\.6390763699031835|0\.08969509321900714|-0\.5302183702845814|-0\.08975921426717537|-0\.10099863612077489|-0\.6341408038134363|-1\.6425900051669422|0\.01511309727988711|
 
-We then check the correlation between the parameters, as it is clear from the obtained matrix that there is no correlation between any of the variables.
+We then check the correlation between the parameters, as it is clear from the obtained matrix that there is no correlation between any of the variables. (We do so to reduce the number of variables and remove redundant ones, and thus improve performance)
 
 |index|VERDICT|PARAMETER\_1|PARAMETER\_2|PARAMETER\_3|PARAMETER\_4|PARAMETER\_5|PARAMETER\_6|PARAMETER\_7|PARAMETER\_8|PARAMETER\_9|
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -71,7 +73,7 @@ We then check the correlation between the parameters, as it is clear from the ob
 
 ## Building a Model
 
-Our task now is to build an effective neural network model that will be capable of telling fraud transactions with accuracy.
+Building a powerful neural network model that can accurately detect fraud transactions is our current objective.
 
 ```python
 model = Sequential([               
@@ -82,12 +84,13 @@ model = Sequential([
         Dense(1,activation ='sigmoid')
     ])
 ```
-Now we have modeled the neural nets. They are powerful universal function approximators, and amongst all the models we used this one, gave the best results.
 
-We found the best architecture for our Neural Network by trial-and-error (not shown here). We observed that having 3 layers improved both the training and validation loss as compared to 2 layers, and adding an extra 4th layer worsened the validation loss due to overfitting of data. The number of neurons in each layer was determined by trying several variations. On making 256 neurons in one of the layers, we were finally able to estimate satisfactorily.
+We have now modelled neural networks. They are strong universal function approximators, and this model produced the best results out of all the ones we tried.
+
+Through trial and error, we arrived at the ideal design for our neural network (not depicted here). When compared to 2 layers, we found that having 3 layers improved both the training and validation loss, and that adding a fourth layer made the validation loss worse since the data was overfit. By attempting several variants, the number of neurons in each layer was calculated. Finally, after creating 256 neurons in one of the layers, we could estimate correctly.
 
 
-We tried several learning rates and settled on 0.001 because decreasing it further was significantly increasing the training time without much improvement on the results.
+After experimenting with a number of learning rates, we decided on 0.001 since continuing to reduce it was dramatically lengthening the training period without any increase in the outcomes.
 
 ``` python
 model.compile(
@@ -103,11 +106,31 @@ model.fit(
 )
 ```
 
-NOTE: We tried using the traditional 80-20 split method for model traing but it kept failing due to the highly unbalanced datapoints grouped by verdict ie. legit and fraud transactions. So we dropped that thought.
+We implement training using the traditional 80-20 split method for model training as it is giving better results.
+
+``` python
+model.fit(X_array, Y_array, epochs=120, batch_size=200, validation_split=0.2)
+```
 
 
 
 ## Results
+
+We can see if the model performs well by using 2 parameters, R-squared and AUC-ROC.
+
+``` python
+from sklearn.metrics import roc_auc_score
+auc_roc = roc_auc_score(Y_array, prediction)
+
+from sklearn.metrics import r2_score
+r_squared = r2_score(Y_array, prediction)
+
+```
+Higher the value of R-squared and AUC-ROC, better is the model.
+Generally, R-squared value over 0.3 and AUC-ROC over 0.7 is considered good (obviously differs with different objectives and models). Thus, our model seems to perform well wrt this.
+
+The value of R-squared is ____.
+The value of AUC-ROC is _____.
 
 The result while training the model are - 
 
@@ -119,5 +142,11 @@ And on investigating in detail we found out -
 - It correctly identified fraud transactions ____ out of _____ times.
 - It correctly identified legit transactions ____ out of _____ times.
 
-And the results on test.csv are posted in the repo
+And the results on test.csv are posted in the repo with name predictions.csv
+
+
+PS-
+There were so many possible combinations of parameters we could tweak that I couldn't stop playing with and learning how those affected my model. So, now I am overly intrigued with how to make models more accurate. I would really want your suggestions and feedback.
+
+
 ## Thanks:)
